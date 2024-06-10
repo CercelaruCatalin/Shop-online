@@ -52,9 +52,9 @@ export const getUserOrders = async (user_id: string): Promise<Orders[]> => {
     }
 }
 
-export const createOrder = async (requestData: any): Promise<any> => {
+export const createOrder = async (requestData: Orders): Promise<Orders | null> => {
     try {
-        const response = await fetch("http://localhost:8080/orders", {
+        const response = await fetch("http://localhost:8080/orders/create", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export const createOrder = async (requestData: any): Promise<any> => {
     }
 }
 
-export const updateOrder = async (orderId: string, updateData: any): Promise<any> => {
+export const updateOrder = async (orderId: number, updateData: any): Promise<any> => {
     try {
         const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
             method: 'PUT',
@@ -98,7 +98,8 @@ export const updateOrder = async (orderId: string, updateData: any): Promise<any
     }
 }
 
-export const deleteOrder = async (orderId: string): Promise<any> => {
+
+export const deleteOrder = async (orderId: number): Promise<any> => {
     try {
         const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
             method: 'DELETE',

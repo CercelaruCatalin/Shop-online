@@ -27,6 +27,7 @@ export const getUserCart = async (username: string): Promise<CartItem[]> => {
 }
 
 
+
 export const createCartByUser = async (username: string): Promise<any> => {
     try {
         const response = await fetch(`http://localhost:8080/users/${username}/shopping_cart`, {
@@ -49,9 +50,32 @@ export const createCartByUser = async (username: string): Promise<any> => {
     }
 }
 
-export const addItemToShoppingCart = async (username: string, productId: string): Promise<any> => {
+export const updateQuantityInCart = async (username: string, productId: string, quantity: number): Promise<any> => {
     try {
-        const response = await fetch(`http://localhost:8080/users/${username}/shopping_cart/${productId}`, {
+      const response = await fetch(`http://localhost:8080/users/${username}/shopping_cart/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity }), // Include the quantity in the request body
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update item quantity in shopping cart");
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to update item quantity in shopping cart: ", error);
+      return null;
+    }
+  }
+  
+
+export const addItemToShoppingCart = async (username: string, productId: string, quantity: number): Promise<any> => {
+    try {
+        const response = await fetch(`http://localhost:8080/users/${username}/shopping_cart_quantity/${productId}/quantity/${quantity}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +95,7 @@ export const addItemToShoppingCart = async (username: string, productId: string)
     }
 }
 
-export const deleteItemFromShoppingCart = async (username: string, productId: string): Promise<any> => {
+export const deleteItemFromCart = async (username: string, productId: string): Promise<any> => {
     try {
         const response = await fetch(`http://localhost:8080/users/${username}/shopping_cart/${productId}`, {
             method: 'DELETE',
